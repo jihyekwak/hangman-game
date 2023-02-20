@@ -56,10 +56,14 @@ body {
     width: 50%;
     /* text-align: center; */
     display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
+    /* gap: 10px; */
+    /* align-items: center; */
     justify-content: center;
+}
+
+#newQuiz {
+    display: flex;
+    gap: 20px;
 }
 
 .letter-box {
@@ -106,6 +110,12 @@ body {
 
 .chosen {
     background-color: cornflowerblue;
+}
+
+.chosen.alphabet-btn:hover {
+    background-color: cornflowerblue;
+    transform: none;
+    cursor: default;
 }
 
 

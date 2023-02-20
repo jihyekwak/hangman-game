@@ -3,16 +3,29 @@ const quizzes = ["ant", "banana", "cat", "dog", "elephant", "fish", "gorilla", "
 const alphabetBtns = Array.from(document.querySelectorAll(".alphabet-btn"));
 const startBtn = document.querySelector("#start-btn");
 const quizArea = document.querySelector("#quiz-area");
+// const countArea = document.querySelector("#count-area");
 
 let randomQuiz = null;
+let count = 0;
+let isPlaying = false;
 
 console.log(alphabetBtns);
 
 function onAlphabetBtnClick(event) {
-    const chosenAlphabetBtn = event.target;
-    chosenAlphabetBtn.classList.add("chosen");
-    const chosenAlphabet = chosenAlphabetBtn.dataset.value;
-    console.log(chosenAlphabet);
+    if (isPlaying) {
+        count += 1;
+        const countNumber = document.querySelector("#count");
+        countNumber.innerHTML = count;
+        const chosenAlphabetBtn = event.target;
+        chosenAlphabetBtn.classList.add("chosen");
+        const chosenAlphabet = chosenAlphabetBtn.dataset.value;
+        console.log(chosenAlphabet);
+        if (randomQuiz.includes(chosenAlphabet)) {
+            const foundLetter = Array.from(document.querySelectorAll(`#${chosenAlphabet}`));
+            foundLetter.forEach(letter => letter.classList.remove("hidden"));
+        }
+        chosenAlphabetBtn.removeEventListener("click", onAlphabetBtnClick);
+    }
 }
 
 function gameGenerator() {
@@ -22,14 +35,24 @@ function gameGenerator() {
 }
 
 function onStartBtnClick() {
+    isPlaying = true;
+    const previousQuiz = document.querySelector("#newQuiz");
+    if (previousQuiz) {
+        previousQuiz.remove();
+        alphabetBtns.forEach(alphabetBtn => alphabetBtn.classList.remove("chosen"));
+    }
     gameGenerator();
+    const newQuiz = document.createElement("div");
+    newQuiz.id = "newQuiz";
+    quizArea.appendChild(newQuiz); 
     for( let i = 0 ; i < randomQuiz.length ; i++ ) {
         const letterBox = document.createElement("div");
-        letterBox.id = randomQuiz[i];
+        // letterBox.id = randomQuiz[i];
         letterBox.classList.add("letter-box")
-        quizArea.appendChild(letterBox);
+        newQuiz.appendChild(letterBox);
         const letterSpan = document.createElement("span");
         letterSpan.classList.add("hidden");
+        letterSpan.id = randomQuiz[i];
         letterSpan.innerHTML = randomQuiz[i];
         letterBox.appendChild(letterSpan);
     }
