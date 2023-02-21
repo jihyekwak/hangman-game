@@ -17,14 +17,15 @@ function onAlphabetBtnClick(event) {
         const countNumber = document.querySelector("#count");
         countNumber.innerHTML = count;
         const chosenAlphabetBtn = event.target;
+        chosenAlphabetBtn.classList.remove("active");
         chosenAlphabetBtn.classList.add("chosen");
         const chosenAlphabet = chosenAlphabetBtn.dataset.value;
+        chosenAlphabetBtn.removeEventListener("click", onAlphabetBtnClick);
         console.log(chosenAlphabet);
         if (randomQuiz.includes(chosenAlphabet)) {
             const foundLetter = Array.from(document.querySelectorAll(`#${chosenAlphabet}`));
             foundLetter.forEach(letter => letter.classList.remove("hidden"));
         }
-        chosenAlphabetBtn.removeEventListener("click", onAlphabetBtnClick);
     }
 }
 
@@ -37,6 +38,7 @@ function gameGenerator() {
 function onStartBtnClick() {
     isPlaying = true;
     alphabetBtns.forEach(alphabetBtn => alphabetBtn.addEventListener("click", onAlphabetBtnClick));
+    alphabetBtns.forEach(alphabetBtn => alphabetBtn.classList.add("active"));
     const previousQuiz = document.querySelector("#newQuiz");
     if (previousQuiz) {
         previousQuiz.remove();
