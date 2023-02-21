@@ -36,6 +36,7 @@ function gameGenerator() {
 
 function onStartBtnClick() {
     isPlaying = true;
+    alphabetBtns.forEach(alphabetBtn => alphabetBtn.addEventListener("click", onAlphabetBtnClick));
     const previousQuiz = document.querySelector("#newQuiz");
     if (previousQuiz) {
         previousQuiz.remove();
@@ -58,5 +59,5 @@ function onStartBtnClick() {
     }
 }
 
-alphabetBtns.forEach(alphabetBtn => alphabetBtn.addEventListener("click", onAlphabetBtnClick));
+
 startBtn.addEventListener("click", onStartBtnClick);
