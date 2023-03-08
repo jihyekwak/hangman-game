@@ -6,16 +6,13 @@ const quizArea = document.querySelector("#quiz-area");
 // const countArea = document.querySelector("#count-area");
 
 let randomQuiz = null;
-let count = 0;
+let lives = 10;
 let isPlaying = false;
 
 console.log(alphabetBtns);
 
 function onAlphabetBtnClick(event) {
     if (isPlaying) {
-        count += 1;
-        const countNumber = document.querySelector("#count");
-        countNumber.innerHTML = count;
         const chosenAlphabetBtn = event.target;
         chosenAlphabetBtn.classList.remove("active");
         chosenAlphabetBtn.classList.add("chosen");
@@ -25,26 +22,20 @@ function onAlphabetBtnClick(event) {
         if (randomQuiz.includes(chosenAlphabet)) {
             const foundLetter = Array.from(document.querySelectorAll(`#${chosenAlphabet}`));
             foundLetter.forEach(letter => letter.classList.remove("hidden"));
+        } else {
+            lives = lives - 1;
+            const livesNumber = document.querySelector("#count");
+            livesNumber.innerHTML = lives;
+            console.log(lives);
+            checkScore();
         }
     }
 }
 
 function gameGenerator() {
     randomQuiz = quizzes[Math.floor(Math.random() * quizzes.length)];
-    console.log(randomQuiz);
-    return randomQuiz;
-}
-
-function onStartBtnClick() {
-    isPlaying = true;
-    alphabetBtns.forEach(alphabetBtn => alphabetBtn.addEventListener("click", onAlphabetBtnClick));
-    alphabetBtns.forEach(alphabetBtn => alphabetBtn.classList.add("active"));
-    const previousQuiz = document.querySelector("#newQuiz");
-    if (previousQuiz) {
-        previousQuiz.remove();
-        alphabetBtns.forEach(alphabetBtn => alphabetBtn.classList.remove("chosen"));
-    }
-    gameGenerator();
+    // console.log(randomQuiz);
+    // return randomQuiz;
     const newQuiz = document.createElement("div");
     newQuiz.id = "newQuiz";
     quizArea.appendChild(newQuiz); 
@@ -61,5 +52,51 @@ function onStartBtnClick() {
     }
 }
 
+function checkScore() {
+    if(lives <= 0) {
+        // startBtn.classList.remove("hidden");
+        resetGame()
+    }
+}
+
+function resetGame() {
+    const previousQuiz = document.querySelector("#newQuiz");
+    if (previousQuiz) {
+        previousQuiz.remove();
+        alphabetBtns.forEach(alphabetBtn => alphabetBtn.classList.remove("chosen"));
+    }
+    // alphabetBtns.forEach(alphabetBtn => alphabetBtn.addEventListener("click", onAlphabetBtnClick));
+    // alphabetBtns.forEach(alphabetBtn => alphabetBtn.classList.add("active"));
+    startBtn.classList.remove("hidden");
+    lives = 10;
+}
+
+function onStartBtnClick() {
+    isPlaying = true;
+    resetGame();
+    startBtn.classList.add("hidden");
+    alphabetBtns.forEach(alphabetBtn => alphabetBtn.addEventListener("click", onAlphabetBtnClick));
+    alphabetBtns.forEach(alphabetBtn => alphabetBtn.classList.add("active"));
+    // const previousQuiz = document.querySelector("#newQuiz");
+    // if (previousQuiz) {
+    //     previousQuiz.remove();
+    //     alphabetBtns.forEach(alphabetBtn => alphabetBtn.classList.remove("chosen"));
+    // }
+    gameGenerator();
+    // const newQuiz = document.createElement("div");
+    // newQuiz.id = "newQuiz";
+    // quizArea.appendChild(newQuiz); 
+    // for( let i = 0 ; i < randomQuiz.length ; i++ ) {
+    //     const letterBox = document.createElement("div");
+    //     // letterBox.id = randomQuiz[i];
+    //     letterBox.classList.add("letter-box")
+    //     newQuiz.appendChild(letterBox);
+    //     const letterSpan = document.createElement("span");
+    //     letterSpan.classList.add("hidden");
+    //     letterSpan.id = randomQuiz[i];
+    //     letterSpan.innerHTML = randomQuiz[i];
+    //     letterBox.appendChild(letterSpan);
+    // }
+}
 
 startBtn.addEventListener("click", onStartBtnClick);

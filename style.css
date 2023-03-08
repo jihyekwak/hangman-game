@@ -151,3 +151,7 @@ h1 {
     line-height: 3rem;
     text-align: center;
 }
+
+#start-btn.hidden {
+    display: none;
+}
